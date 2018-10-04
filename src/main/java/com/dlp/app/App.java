@@ -68,7 +68,7 @@ public class App {
 
         int numberToMask = 0;
         char maskingCharacter = '#';
-        String val = "Hello, my email address is somebody@somewhere.com";
+        String val = "Hello, my email address is somebody@somewhere.com and my number is 085-7198398."; // todo: mask other fields and identify in Order JSON. Create custom template
         DeIdentification.deIdentifyWithMask(val, null, maskingCharacter, numberToMask, "eshop-bigdata");
     }
 }
