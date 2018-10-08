@@ -28,9 +28,10 @@ public class DeIdentification {
      *                         sensitive data to mask. Omitting this value or
      *                         setting it to 0 masks all sensitive chars.
      * @param projectId        ID of Google Cloud project to run the API under.
+     * @throws Exception
      */
-    static void deIdentifyWithMask(String string, List<InfoType> infoTypes, Character maskingCharacter,
-            int numberToMask, String projectId) {
+    public static String deIdentifyWithMask(String string, List<InfoType> infoTypes, Character maskingCharacter,
+            int numberToMask, String projectId) throws Exception {
 
         // instantiate a client
         try (DlpServiceClient dlpServiceClient = DlpServiceClient.create()) {
@@ -50,23 +51,24 @@ public class DeIdentification {
             InfoTypeTransformations infoTypeTransformationArray = InfoTypeTransformations.newBuilder()
                     .addTransformations(infoTypeTransformationObject).build();
 
+            InspectConfig inspectConfig = InspectConfig.newBuilder().addAllInfoTypes(infoTypes).build();
+
             DeidentifyConfig deidentifyConfig = DeidentifyConfig.newBuilder()
                     .setInfoTypeTransformations(infoTypeTransformationArray).build();
 
             // Create the deidentification request object
             DeidentifyContentRequest request = DeidentifyContentRequest.newBuilder()
-                    .setParent(ProjectName.of(projectId).toString()).setDeidentifyConfig(deidentifyConfig)
-                    .setItem(contentItem).build();
+                    .setParent(ProjectName.of(projectId).toString()).setInspectConfig(inspectConfig)
+                    .setDeidentifyConfig(deidentifyConfig).setItem(contentItem).build();
 
             // Execute the deidentification request
             DeidentifyContentResponse response = dlpServiceClient.deidentifyContent(request);
 
             // Print the character-masked input value
             // e.g. "My SSN is 123456789" --> "My SSN is *********"
-            String result = response.getItem().getValue();
-            System.out.println(result);
+            return response.getItem().getValue();
         } catch (Exception e) {
-            System.out.println("Error in deidentifyWithMask: " + e.getMessage());
+            throw e;
         }
     }
 }
