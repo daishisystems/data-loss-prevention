@@ -68,15 +68,20 @@ public class App {
 
         int numberToMask = 0;
         char maskingCharacter = '#';
-        String val = "Hello, my email address is somebody@somewhere.com and my number is 085-7198398."; // todo: mask
-                                                                                                        // other fields
-                                                                                                        // and identify
-                                                                                                        // in Order
-                                                                                                        // JSON. Create
-                                                                                                        // custom
-                                                                                                        // template
+        String val = "Hello, my name is Paul Mooney and email address is somebody@somewhere.com and my number is 085-7198398."; // todo:
+                                                                                                                                // mask
+        // other fields
+        // and identify
+        // in Order
+        // JSON. Create
+        // custom
+        // template
+
+        val = "{'DeliveryDetails':[{'Id':1,'ContactDetailsNickName':null,'Address1':'Address 1','Address2':'Address 2','Address3':null,'City':'Sydney','PostalCode':'1234','Region':'West Cost','Country':'AU','Email':'test@email.com','First_Name':'First Name','LastName':'Last Name','Gender':0,'Telephone':'123456789','PoBox':null,'MetadataItems':[]}]}";
+
         List<InfoType> infoTypesList = Collections.emptyList();
         String masked = DeIdentification.deIdentifyWithMask(val, infoTypesList, maskingCharacter, numberToMask,
                 "eshop-bigdata");
+        System.out.print(masked);
     }
 }
